@@ -1,4 +1,3 @@
-
 const { rows, row } = require("../../../util/database")
 
 const GET_ALL = `
