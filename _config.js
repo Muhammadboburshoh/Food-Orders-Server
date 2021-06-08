@@ -4,7 +4,7 @@ const config = {
     host: 'localhost',
     user: 'muhammadbobur',
     password: '1111',
-    database: 'quiz_app',
+    database: 'orders_food',
     port: 5432
   }
 }
