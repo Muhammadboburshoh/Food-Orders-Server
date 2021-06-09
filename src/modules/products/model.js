@@ -48,8 +48,11 @@ const createProductSQL = `
 `
 
 const createProduct = ({productName, productPrice, productImage, catigoryId}) => {
-  return row(createProductSQL, productName, productPrice, productImage, catigoryId)
+  
+  console.log(productName, productPrice, productImage, catigoryId);
+  // return row(createProductSQL, productName, productPrice, productImage, catigoryId)
 }
 
 module.exports.getAll = getAll
 module.exports.tables = tables
+module.exports.createProduct = createProduct
