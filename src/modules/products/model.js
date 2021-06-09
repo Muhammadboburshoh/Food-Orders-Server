@@ -15,17 +15,31 @@ const productsSQL = `
     categories as c on c.category_id = p.category_id and c.category_id = $1
 `
 
+const getAll = (catigoryId) => rows(productsSQL, catigoryId)
+
+
+
 const tablesSQL = `
   select * from tables
 `
-
-const getAll = (catigoryId) => {
-  return rows(productsSQL, catigoryId)
-}
 
 const tables = () => {
   return rows(tablesSQL)
 }
 
+
+const orderSQL = `
+  insert into orders(
+    table_id,
+    product_id,
+    order_product_count
+  ) values
+  ($1, $2, $3) RETURNING *
+`
+
+const order = ({tableId, productId, productCount}) => row(orderSQL, tableId, productId, productCount)
+
+
 module.exports.getAll = getAll
 module.exports.tables = tables
+module.exports.order = order
