@@ -1,5 +1,9 @@
 const { rows, row } = require("../../../util/database")
 
+
+/*
+  ALL Products model
+*/
 const productsSQL = `
   select
     p.product_id,
@@ -18,7 +22,9 @@ const productsSQL = `
 const getAll = (catigoryId) => rows(productsSQL, catigoryId)
 
 
-
+/*
+  Table model
+*/
 const tablesSQL = `
   select * from tables
 `
@@ -28,18 +34,22 @@ const tables = () => {
 }
 
 
-const orderSQL = `
-  insert into orders(
-    table_id,
-    product_id,
-    order_product_count
+/*
+  CREATE product Model
+*/
+const createProductSQL = `
+  insert into products (
+    product_name,
+    product_price,
+    product_image,
+    category_id
   ) values
-  ($1, $2, $3) RETURNING *
+  ($1, $2, $3, $4),
 `
 
-const order = ({tableId, productId, productCount}) => row(orderSQL, tableId, productId, productCount)
-
+const createProduct = ({productName, productPrice, productImage, catigoryId}) => {
+  return row(createProductSQL, productName, productPrice, productImage, catigoryId)
+}
 
 module.exports.getAll = getAll
 module.exports.tables = tables
-module.exports.order = order

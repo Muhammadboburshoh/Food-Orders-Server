@@ -28,13 +28,11 @@ router.get('/', async function(req, res, next) {
 })
 
 
-/*
-    products Order
-*/
-router.post("/addproduct", async (req, res) => {
 
-  res.send(await products.order(req.body))
-})
+/*
+  create Product
+*/
+// router.post("/")
 
 
 module.exports = router
