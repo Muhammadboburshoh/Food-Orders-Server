@@ -25,6 +25,7 @@ router.get('/', async function(req, res, next) {
       turkProducts,
       ichimlikProducts
   })
+  res.status(401).end()
 })
 
 
@@ -32,7 +33,19 @@ router.get('/', async function(req, res, next) {
 /*
   create Product
 */
-// router.post("/")
+router.post("/addproducts", (req, res) => {
 
+  console.log(req.files);
+  // console.log(req.body);
+
+  res.send("OK")
+})
+
+
+/* {
+  "productName": "yangi taom",
+  "productPrice": 15000,
+  "catigoryId": 2
+} */
 
 module.exports = router

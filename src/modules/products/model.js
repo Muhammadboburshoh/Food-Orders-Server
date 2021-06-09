@@ -44,7 +44,7 @@ const createProductSQL = `
     product_image,
     category_id
   ) values
-  ($1, $2, $3, $4),
+  ($1, $2, $3, $4)
 `
 
 const createProduct = ({productName, productPrice, productImage, catigoryId}) => {
