@@ -2,6 +2,8 @@ const router = require("express").Router()
 const { v4 } = require("uuid")
 const path = require("path")
 
+
+
 const products = require("./model")
 
 /* GET all products. */
@@ -42,34 +44,31 @@ router.post("/addproducts", async (req, res) => {
     let { productImage } = req.files
     const mimetype = productImage.mimetype.split("/")
 
-    // let { productName, productPrice, catigoryId } = req.body
-    
-  
+
     let photoName = v4()
     
     const imgPath = path.join(__dirname, "/images",photoName + "." + mimetype[1])
 
-    console.log(req.body);
   
     if(mimetype[0] === "image") {
       productImage.mv(imgPath, (err) =>{
         console.log(err);
       })
+
+      res.send(await products.createProduct({...req.body, productImage: photoName + "." + mimetype[1]}))
+    }
+    else {
+      res.status(401).end()
     }
 
-    res.send("OK")
-
-    // res.send(await products.createProduct({...req.body, productImage: photoName + "." + mimetype[1]}))
-  }catch(err) {
+  }
+  catch(err) {
     res.statusMessage = err
     res.status(401).end()
     console.log(err);
   }
 
-
 })
 
-
-/*  */
 
 module.exports = router

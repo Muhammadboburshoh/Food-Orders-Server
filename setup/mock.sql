@@ -23,3 +23,5 @@ insert into products (
 ;
 
 insert into tables(table_number) values (1), (2), (3), (4), (5);
+
+insert into users (username, password, role) values ('admin', crypt('1234', gen_salt('bf')), 1);

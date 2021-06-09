@@ -44,13 +44,12 @@ const createProductSQL = `
     product_image,
     category_id
   ) values
-  ($1, $2, $3, $4)
+  ($1, $2, $3, $4) returning *
 `
 
 const createProduct = ({productName, productPrice, productImage, catigoryId}) => {
-  
-  console.log(productName, productPrice, productImage, catigoryId);
-  // return row(createProductSQL, productName, productPrice, productImage, catigoryId)
+
+  return row(createProductSQL, productName, productPrice, productImage, catigoryId)
 }
 
 module.exports.getAll = getAll
