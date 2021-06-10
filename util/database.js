@@ -36,6 +36,8 @@ const row = async (SQL, ...params) => {
   try {
 
     const { rows: [row] } = await connect.query(SQL, params)
+    console.log(params);
+
 
     return row
 

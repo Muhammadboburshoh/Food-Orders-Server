@@ -67,7 +67,58 @@ router.post("/addproducts", async (req, res) => {
 
     }
 
+  }
+  catch(err) {
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
+
+
+/*
+  EDIT Product
+*/
+router.put("/:id", async (req, res) => {
+
+  try {
+    const productId = req.params.id
+
+    const user = await verify(req.headers.access_token)
+
+    if(user.role == 1) {
+
+      let { productImage } = req.files
+      const mimetype = productImage.mimetype.split("/")
+
+
+      let photoName = v4()
+      
+      const imgPath = path.join(__dirname, "/images",photoName + "." + mimetype[1])
+
     
+      if(mimetype[0] === "image") {
+        productImage.mv(imgPath, (err) =>{
+          console.log(err);
+        })
+
+        const editProduct = await products.editProduct({
+          ...req.body,
+          productImage: photoName + "." + mimetype[1],
+          productId: productId - 0,
+        })
+
+        console.log(editProduct, "b");
+
+        res.status(201).send(editProduct)
+      }
+      else {
+        res.status(401).end()
+      }
+
+    }
+
 
   }
   catch(err) {
@@ -75,6 +126,8 @@ router.post("/addproducts", async (req, res) => {
     res.status(401).end()
     console.log(err);
   }
+
+
 
 })
 

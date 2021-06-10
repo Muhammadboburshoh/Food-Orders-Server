@@ -52,6 +52,50 @@ const createProduct = ({productName, productPrice, productImage, catigoryId}) =>
   return row(createProductSQL, productName, productPrice, productImage, catigoryId)
 }
 
+
+/*
+  EDIT Product Model
+*/
+const editProductSQL = `
+  update products set
+    product_name = coalesce($2, product_name),
+    category_id = coalesce($3, category_id),
+    product_price = coalesce($4, product_price),
+    product_image = coalesce($5, product_image),
+    product_available = coalesce($6, product_available)
+  where
+    product_id = $1
+  returning
+    product_name,
+    category_id,
+    product_price,
+    product_image,
+    product_available
+`
+
+const editProduct = ({
+    productName,
+    categoryId,
+    productPrice,
+    productImage,
+    productAvailable,
+    productId
+  }) => {
+
+    console.log("a");
+
+  return row(
+    editProductSQL,
+    productId,
+    productName,
+    categoryId - 0,
+    productPrice - 0,
+    productImage,
+    productAvailable
+  )
+}
+
 module.exports.getAll = getAll
 module.exports.tables = tables
 module.exports.createProduct = createProduct
+module.exports.editProduct = editProduct
