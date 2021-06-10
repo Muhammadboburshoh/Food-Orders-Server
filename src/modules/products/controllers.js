@@ -138,6 +138,28 @@ router.put("/:id", async (req, res) => {
 })
 
 
+router.delete("/del/:id", async(req, res)=> {
+
+  const productId = req.params.id
+
+  const user = await verify(req.headers.access_token)
+
+  if(user.role == 1) {
+
+    const deleteProduct = await products.deleteProduct(productId)
+
+    if(deleteProduct) {
+
+      res.status(201).send(deleteProduct)
+    } else{
+      res.status(400).end()
+    }
+  }else {
+    res.status(400).end()
+  }
+
+})
+
 
 
 module.exports = router

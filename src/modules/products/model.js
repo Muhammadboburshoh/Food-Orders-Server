@@ -94,9 +94,21 @@ const editProduct = ({
 }
 
 
+/*
+  DELETE product
+*/
+const deleteProductSQL = `
+  delete from products
+  where
+    product_id = $1
+  returning *
+`
+
+const deleteProduct = (productId) => row(deleteProductSQL, productId)
 
 
 module.exports.getAll = getAll
 module.exports.tables = tables
 module.exports.createProduct = createProduct
 module.exports.editProduct = editProduct
+module.exports.deleteProduct = deleteProduct
