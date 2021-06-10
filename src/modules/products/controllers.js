@@ -50,16 +50,22 @@ router.post("/addproducts", async (req, res) => {
 
 
       let photoName = v4()
-      
+
       const imgPath = path.join(__dirname, "/images",photoName + "." + mimetype[1])
 
     
       if(mimetype[0] === "image") {
         productImage.mv(imgPath, (err) =>{
-          console.log(err);
+
         })
 
-        res.send(await products.createProduct({...req.body, productImage: photoName + "." + mimetype[1]}))
+        const newProduct =  await products.createProduct({...req.body, productImage: photoName + "." + mimetype[1]})
+
+        if(newProduct) {
+          res.status(201).send(newProduct)
+        }else {
+          res.status(400).end()
+        }
       }
       else {
         res.status(401).end()
@@ -100,7 +106,7 @@ router.put("/:id", async (req, res) => {
     
       if(mimetype[0] === "image") {
         productImage.mv(imgPath, (err) =>{
-          // console.log(err);
+
         })
         
         const editProduct = await products.editProduct({
@@ -109,9 +115,12 @@ router.put("/:id", async (req, res) => {
           productId: productId - 0,
         })
 
-        console.log(editProduct);
+        if(editProduct) {
+          res.status(201).send(editProduct)
+        } else {
+          res.status(401).end()
+        }
 
-        res.status(201).send(editProduct)
       }
       else {
         res.status(401).end()
