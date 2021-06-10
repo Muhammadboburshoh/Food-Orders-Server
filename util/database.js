@@ -20,7 +20,6 @@ const rows = async (SQL, ...params) => {
 
     return rows
 
-    console.log(rows);
   }
   catch(e) {
     throw e
@@ -40,7 +39,6 @@ const row = async (SQL, ...params) => {
 
     return row
 
-    console.log(rows);
   }
   catch(e) {
     throw e

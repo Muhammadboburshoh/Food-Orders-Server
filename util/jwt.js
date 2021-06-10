@@ -2,8 +2,6 @@ const jwt = require("jsonwebtoken")
 
 const SECRET = "SECRET_KEY"
 
-console.log(jwt.verify);
-
 const sign = pyload => jwt.sign(pyload, SECRET, {
   expiresIn: "1000h"
 })
