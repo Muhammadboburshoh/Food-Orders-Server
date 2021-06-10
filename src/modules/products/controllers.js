@@ -94,22 +94,22 @@ router.put("/:id", async (req, res) => {
 
 
       let photoName = v4()
-      
-      const imgPath = path.join(__dirname, "/images",photoName + "." + mimetype[1])
+
+      const imgPath = path.join(__dirname, "/images",`${photoName}.${mimetype[1]}`)
 
     
       if(mimetype[0] === "image") {
         productImage.mv(imgPath, (err) =>{
-          console.log(err);
+          // console.log(err);
         })
-
+        
         const editProduct = await products.editProduct({
           ...req.body,
           productImage: photoName + "." + mimetype[1],
           productId: productId - 0,
         })
 
-        console.log(editProduct, "b");
+        console.log(editProduct);
 
         res.status(201).send(editProduct)
       }
@@ -119,7 +119,6 @@ router.put("/:id", async (req, res) => {
 
     }
 
-
   }
   catch(err) {
     res.statusMessage = err
@@ -127,9 +126,9 @@ router.put("/:id", async (req, res) => {
     console.log(err);
   }
 
-
-
 })
+
+
 
 
 module.exports = router

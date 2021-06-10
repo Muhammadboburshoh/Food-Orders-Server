@@ -82,18 +82,19 @@ const editProduct = ({
     productId
   }) => {
 
-    console.log("a");
-
   return row(
     editProductSQL,
     productId,
     productName,
-    categoryId - 0,
-    productPrice - 0,
+    categoryId,
+    productPrice,
     productImage,
     productAvailable
   )
 }
+
+
+
 
 module.exports.getAll = getAll
 module.exports.tables = tables
