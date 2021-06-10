@@ -138,6 +138,9 @@ router.put("/:id", async (req, res) => {
 })
 
 
+/*
+  Delete Product
+*/
 router.delete("/del/:id", async(req, res)=> {
 
   const productId = req.params.id
