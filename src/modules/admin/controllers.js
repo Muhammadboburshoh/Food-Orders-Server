@@ -8,9 +8,20 @@ const { sign }= require("../../../util/jwt")
   ADMIN login
 */
 
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
 
-  res.send("OK")
+  const user = await admin.userLogin(req.body)
+
+  if (user) {
+
+    const accessToken = sign(user)
+
+    res.status(201).send({ user, accessToken, })
+  }
+  else {
+    res.status(401).end()
+  }
+
 })
 
 module.exports = router
