@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
+var categoriesRouter = require('./src/modules/categories/controllers');
 var productsRouter = require('./src/modules/products/controllers');
 var orderRouter = require('./src/modules/orders/controllers');
 var tablesRouter = require('./src/modules/tables/controllers');
@@ -24,7 +25,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((_, res, next) => {
 
+	res.set({
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Methods': '*',
+		'Access-Control-Allow-Headers': 'Content-Type, access_token',
+	})
+
+	next()
+})
+
+
+app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
 app.use('/order', orderRouter);
 app.use('/tables', tablesRouter);

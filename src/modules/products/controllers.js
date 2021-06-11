@@ -6,6 +6,8 @@ const path = require("path")
 const { verify }= require("../../../util/jwt")
 const products = require("./model")
 
+
+
 /* GET all products. */
 router.get('/', async function(req, res, next) {
 

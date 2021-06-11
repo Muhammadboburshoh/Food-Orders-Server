@@ -1,6 +1,5 @@
 const { rows, row } = require("../../../util/database")
 
-
 /*
   ALL Products model
 */
