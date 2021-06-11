@@ -10,7 +10,6 @@ const productsSQL = `
     p.product_name,
     p.product_price,
     p.product_image,
-    p.product_description,
     p.product_available,
     c.category_name
   from
