@@ -84,23 +84,43 @@ router.put("/:id", async (req, res) => {
 
     if(user.role == 1) {
 
-      let { productImage } = req.files
-      const mimetype = productImage.mimetype.split("/")
+      if(req.files) {
 
-
-      let photoName = v4()
-
-      const imgPath = path.join(__dirname, "/images",`${photoName}.${mimetype[1]}`)
-
-    
-      if(mimetype[0] === "image") {
-        productImage.mv(imgPath, (err) =>{
-
-        })
-        
+        let { productImage } = req.files
+        const mimetype = productImage.mimetype.split("/")
+  
+  
+        let photoName = v4()
+  
+        const imgPath = path.join(__dirname, "/images",`${photoName}.${mimetype[1]}`)
+  
+      
+        if(mimetype[0] === "image") {
+          productImage.mv(imgPath, (err) =>{
+  
+          })
+          
+          const editProduct = await products.editProduct({
+            ...req.body,
+            productImage: photoName + "." + mimetype[1],
+            productId: productId - 0,
+          })
+  
+          if(editProduct) {
+            res.status(201).send(editProduct)
+          } else {
+            res.status(401).end()
+          }
+  
+        }
+        else {
+          res.status(401).end()
+        }
+      }
+      else {
         const editProduct = await products.editProduct({
           ...req.body,
-          productImage: photoName + "." + mimetype[1],
+          productImage: undefined,
           productId: productId - 0,
         })
 
@@ -109,10 +129,6 @@ router.put("/:id", async (req, res) => {
         } else {
           res.status(401).end()
         }
-
-      }
-      else {
-        res.status(401).end()
       }
 
     }
