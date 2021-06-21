@@ -162,7 +162,8 @@ router.delete("/del/:id", async(req, res)=> {
     } else{
       res.status(400).end()
     }
-  }else {
+  }
+  else {
     res.status(400).end()
   }
 
