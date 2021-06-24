@@ -4,7 +4,7 @@ const path = require("path")
 
 
 const { verify }= require("../../../util/jwt")
-const products = require("./model")
+const categories = require("./model")
 
 
 
@@ -12,7 +12,7 @@ const products = require("./model")
   Get categories
 */
 
-router.get("/", async (req, res) => res.send(await products.categories()))
+router.get("/", async (req, res) => res.send(await categories.categories()))
 
 
 
