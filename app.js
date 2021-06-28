@@ -39,9 +39,9 @@ app.use((_, res, next) => {
 
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
-app.use('/order', orderRouter);
-app.use('/tables', tablesRouter);
 app.use('/login', adminRouter);
+app.use('/tables', tablesRouter);
+app.use('/order', orderRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

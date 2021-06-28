@@ -39,6 +39,8 @@ create table users(
 
 create unique index username_idx on users (lower(username));
 
+-- create unique index tnumber_idx on users (lower(username));
+
 create extension pgcrypto;
 
 

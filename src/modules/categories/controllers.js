@@ -24,7 +24,7 @@ router.post("/", async(req, res) => {
 
     const user = await verify(req.headers.access_token)
 
-    if(user.user_role == 1) {
+    if(user.role == 1) {
 
       const category = await categories.createCategory(req.body)
 
@@ -56,7 +56,7 @@ router.put("/:id", async (req, res) => {
 
     const user = await verify(req.headers.access_token)
 
-    if(user.user_role == 1) {
+    if(user.role == 1) {
 
       const category = await categories.editCategory({...req.body, categoryId: req.params.id})
 
@@ -88,7 +88,7 @@ router.delete("/del/:id", async(req, res) => {
 
   try {
 
-    if(user.user_role == 1) {
+    if(user.role == 1) {
 
       const deleteCatigory = await categories.deleteCatigory(req.params.id)
     
