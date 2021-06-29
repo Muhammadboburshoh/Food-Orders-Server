@@ -1,18 +1,69 @@
 const { rows, row } = require("../../../util/database")
 
-
 /*
-  Orders model
+  Insert order model
 */
-const orderSQL = `
-  insert into orders(
-    table_id,
-    product_id,
-    order_product_count
-  ) values
-  ($1, $2, $3) RETURNING *
+const createOrderItemSQL = `
+  insert into order_item(product_id, item_count, table_id)
+    values ($1, $2, $3)
+  returning *
+`
+const createOrderSQL = `
+  insert into orders(table_id) values ($1) returning *
 `
 
-const order = ({tableId, productId, productCount}) => row(orderSQL, tableId, productId, productCount)
+const createOrderItem = ({productId, itemCount, tableId}) => row(createOrderItemSQL, productId, itemCount, tableId)
 
-module.exports.order = order
+const createOrder = ({ tableId }) => row(createOrderSQL,  tableId)
+
+/*
+  getOrders
+*/
+
+const successfulOrdersSQL = `
+  select
+    t.table_number as user,
+    array_agg(oi.item_id) as order_id,
+    array_agg(oi.item_count) as count,
+    array_agg(p.product_name)as product
+  from
+    order_item as oi
+  join
+    products as p on p.product_id = oi.product_id
+  join 
+    tables as t on t.table_id = oi.table_id
+  join
+    orders as o on o.table_id = t.table_id
+    where o.order_status = 1
+  group by
+    o.table_id,
+    t.table_id;
+`
+const successfulOrders = () => rows(successfulOrdersSQL)
+
+
+const noSuccessfulOrdersSQL = `
+  select
+    t.table_number as user,
+    array_agg(oi.item_id) as order_id,
+    array_agg(oi.item_count) as count,
+    array_agg(p.product_name)as product
+  from
+    order_item as oi
+  join
+    products as p on p.product_id = oi.product_id
+  join 
+    tables as t on t.table_id = oi.table_id
+  join
+    orders as o on o.table_id = t.table_id
+    where o.order_status = 0
+  group by
+    o.table_id,
+    t.table_id;
+`
+const noSuccessfulOrders = () => rows(noSuccessfulOrdersSQL)
+
+module.exports.createOrderItem = createOrderItem
+module.exports.createOrder = createOrder
+module.exports.successfulOrders = successfulOrders
+module.exports.noSuccessfulOrders = noSuccessfulOrders
