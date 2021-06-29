@@ -39,7 +39,8 @@ create table users(
 
 create unique index username_idx on users (lower(username));
 
--- create unique index tnumber_idx on users (lower(username));
+CREATE UNIQUE INDEX idx_employees_mobile_phone
+ON tables(table_number);
 
 create extension pgcrypto;
 
