@@ -37,12 +37,12 @@ const successfulOrdersSQL = `
     where o.order_status = 1
   group by
     o.table_id,
-    t.table_id;
+    t.table_id
 `
 const successfulOrders = () => rows(successfulOrdersSQL)
 
 
-const noSuccessfulOrdersSQL = `
+const failedSuccessfulOrdersSQL = `
   select
     t.table_number as user,
     array_agg(oi.item_id) as order_id,
@@ -59,11 +59,11 @@ const noSuccessfulOrdersSQL = `
     where o.order_status = 0
   group by
     o.table_id,
-    t.table_id;
+    t.table_id
 `
-const noSuccessfulOrders = () => rows(noSuccessfulOrdersSQL)
+const failedSuccessfulOrders = () => rows(failedSuccessfulOrdersSQL)
 
 module.exports.createOrderItem = createOrderItem
 module.exports.createOrder = createOrder
 module.exports.successfulOrders = successfulOrders
-module.exports.noSuccessfulOrders = noSuccessfulOrders
+module.exports.failedSuccessfulOrders = failedSuccessfulOrders

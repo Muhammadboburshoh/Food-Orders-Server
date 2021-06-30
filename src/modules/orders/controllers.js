@@ -40,12 +40,12 @@ router.get("/", async(req, res) => {
 
 })
 
-router.get("/no", async(req, res) => {
+router.get("/failed", async(req, res) => {
 
-  const noSuccessfulOrders = await order.noSuccessfulOrders()
+  const failedSuccessfulOrders = await order.failedSuccessfulOrders()
 
-  if(noSuccessfulOrders) {
-    res.status(401).send(noSuccessfulOrders)
+  if(failedSuccessfulOrders) {
+    res.status(401).send(failedSuccessfulOrders)
   } else {
   res.status(401).end()
   }
