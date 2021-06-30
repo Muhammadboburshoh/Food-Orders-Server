@@ -3,7 +3,7 @@ const router = require("express").Router()
 const order = require("./model")
 
 /*
-  products Order
+  Create order
 */
 router.post("/", async (req, res) => {
 
@@ -17,7 +17,7 @@ console.log(req.body);
 
 })
 
-router.get("/order", async(req, res )=>{
+router.post("/order", async(req, res )=>{
 
   const newOrder = await order.createOrder(req.body)
 
@@ -28,6 +28,10 @@ router.get("/order", async(req, res )=>{
   }
 })
 
+
+/*
+  Get orders
+*/
 router.get("/", async(req, res) => {
 
   const successfulOrders = await order.successfulOrders()
