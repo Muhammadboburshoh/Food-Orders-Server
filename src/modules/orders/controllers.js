@@ -22,7 +22,7 @@ router.post("/order", async(req, res )=>{
   const newOrder = await order.createOrder(req.body)
 
   if(newOrder) {
-    res.status(401).send(newOrder)
+    res.status(201).send(newOrder)
   } else {
   res.status(401).end()
   }
@@ -37,7 +37,7 @@ router.get("/", async(req, res) => {
   const successfulOrders = await order.successfulOrders()
 
   if(successfulOrders) {
-    res.status(401).send(successfulOrders)
+    res.status(201).send(successfulOrders)
   } else {
   res.status(401).end()
   }
@@ -49,7 +49,7 @@ router.get("/failed", async(req, res) => {
   const failedSuccessfulOrders = await order.failedSuccessfulOrders()
 
   if(failedSuccessfulOrders) {
-    res.status(401).send(failedSuccessfulOrders)
+    res.status(201).send(failedSuccessfulOrders)
   } else {
   res.status(401).end()
   }
