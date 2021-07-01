@@ -56,4 +56,23 @@ router.get("/failed", async(req, res) => {
 
 })
 
+router.get("/new/:id", async(req, res) => {
+
+  const tableId = req.params.id
+
+  const newOrders = await order.newOrders(tableId)
+
+  console.log(newOrders);
+
+  if(newOrders) {
+    res.status(201).send(newOrders)
+  } else if(newOrders == "undefined") {
+    res.status(201).send(newOrders)
+  } else {
+    res.status(401).end()
+  }
+  
+
+})
+
 module.exports = router

@@ -22,8 +22,8 @@ const createOrder = ({ tableId }) => row(createOrderSQL,  tableId)
 
 const successfulOrdersSQL = `
   select
-    t.table_number as user,
-    array_agg(oi.item_id) as order_id,
+    t.table_number as table,
+    array_agg(p.product_price) as price,
     array_agg(oi.item_count) as count,
     array_agg(p.product_name)as product
   from
@@ -44,8 +44,8 @@ const successfulOrders = () => rows(successfulOrdersSQL)
 
 const failedSuccessfulOrdersSQL = `
   select
-    t.table_number as user,
-    array_agg(oi.item_id) as order_id,
+    t.table_number as table,
+    array_agg(p.product_price) as price,
     array_agg(oi.item_count) as count,
     array_agg(p.product_name)as product
   from
@@ -63,11 +63,32 @@ const failedSuccessfulOrdersSQL = `
 `
 const failedSuccessfulOrders = () => rows(failedSuccessfulOrdersSQL)
 
+// buyurtma barayotgan odam bergan buyurtmasini ko'rib turishi uchun
+const newOrdersSQL = `
+  select
+    t.table_number as table,
+    array_agg(p.product_price) as price,
+    array_agg(oi.item_count) as count,
+    array_agg(p.product_name)as product
+  from
+    order_item as oi
+  join
+    products as p on p.product_id = oi.product_id
+  join 
+    tables as t on t.table_id = oi.table_id
+  join
+    orders as o on o.table_id = t.table_id
+    where o.order_status = 0 and t.table_id = $1
+  group by
+    o.table_id,
+    t.table_id
+`
 
-
+const newOrders = (tableId) => rows(newOrdersSQL, tableId)
 
 
 module.exports.createOrderItem = createOrderItem
 module.exports.createOrder = createOrder
 module.exports.successfulOrders = successfulOrders
 module.exports.failedSuccessfulOrders = failedSuccessfulOrders
+module.exports.newOrders = newOrders
