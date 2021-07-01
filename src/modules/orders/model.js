@@ -84,7 +84,7 @@ const newOrdersSQL = `
     t.table_id
 `
 
-const newOrders = (tableId) => rows(newOrdersSQL, tableId)
+const newOrders = (tableId) => row(newOrdersSQL, tableId)
 
 
 module.exports.createOrderItem = createOrderItem
