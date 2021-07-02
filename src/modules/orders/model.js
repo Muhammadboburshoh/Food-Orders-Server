@@ -95,7 +95,7 @@ module.exports.newOrders = newOrders
 
 
 
-`
+/* `
 select
   t.table_number,
   p.product_name
@@ -106,4 +106,4 @@ from
   join
   products as p on oi.product_id = p.product_id
   where t.table_id = 2
-`
+` */
