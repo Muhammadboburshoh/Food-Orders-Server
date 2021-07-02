@@ -8,7 +8,6 @@ const order = require("./model")
 router.post("/", async (req, res) => {
 
     const orderItem = await order.createOrderItem(req.body)
-console.log(req.body);
     if(orderItem) {
       res.status(201).send(orderItem)
     } else {

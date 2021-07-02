@@ -92,3 +92,18 @@ module.exports.createOrder = createOrder
 module.exports.successfulOrders = successfulOrders
 module.exports.failedSuccessfulOrders = failedSuccessfulOrders
 module.exports.newOrders = newOrders
+
+
+
+`
+select
+  t.table_number,
+  p.product_name
+from
+  tables as t
+  join
+  order_item as oi on oi.table_id = t.table_id
+  join
+  products as p on oi.product_id = p.product_id
+  where t.table_id = 2
+`
