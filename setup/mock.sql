@@ -25,3 +25,16 @@ insert into products (
 insert into tables(table_number) values (1), (2), (3), (4), (5);
 
 insert into users (username, password, role) values ('admin', crypt('1234', gen_salt('bf')), 1);
+
+insert into order_item(item_count, product_id, table_id) values
+(2, 3, 1),
+(3, 4, 1),
+(1, 21, 1);
+
+insert into order_item(item_count, product_id, table_id) values
+(2, 3, 3),
+(3, 4, 3),
+(1, 21, 3);
+
+insert into orders(table_id) values (1);
+insert into orders(table_id) values (3);
