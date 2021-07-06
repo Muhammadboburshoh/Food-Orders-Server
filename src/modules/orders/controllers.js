@@ -35,10 +35,31 @@ router.put("/", async (req, res) => {
     if(finishedOrder) {
       res.status(201).send(finishedOrder)
     } else {
-    res.status(401).end()
+      res.status(401).end()
     }
 
   } catch(err) {
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
+
+router.get("/:id", async(req, res) => {
+
+  try{
+    const tableId = req.params.id
+
+    const pendingOrders = await order.pendingOrders(tableId)
+
+    if(pendingOrders) {
+      res.status(201).send(pendingOrders)
+    } else {
+      res.status(401).end()
+    }
+
+  }catch(err) {
     res.statusMessage = err
     res.status(401).end()
     console.log(err);

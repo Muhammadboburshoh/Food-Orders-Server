@@ -29,7 +29,7 @@ const findishedOrder = ({tableId}) => row(findishedOrderSQL, tableId)
 
 const pendingOrdersSQL = `
   select
-    o.order_id,
+    oi.item_id,
     o.table_id,
     oi.product_count,
     p.product_name
@@ -43,8 +43,10 @@ const pendingOrdersSQL = `
     o.status = 0 and table_id = $1
 `
 
-const pendingOrders = ({tableId}) => rows(pendingOrdersSQL, tableId)
+const pendingOrders = (tableId) => rows(pendingOrdersSQL, tableId)
 
+
+// delete
 
 
 module.exports.newOrder = newOrder
