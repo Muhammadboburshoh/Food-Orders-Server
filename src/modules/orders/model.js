@@ -32,7 +32,8 @@ const pendingOrdersSQL = `
     oi.item_id,
     o.table_id,
     oi.product_count,
-    p.product_name
+    p.product_name,
+    p.product_price
   from
     orders as o
   join
