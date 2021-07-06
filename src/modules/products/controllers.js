@@ -10,9 +10,6 @@ const products = require("./model")
 
 /* GET all products. */
 router.get('/:id/:page', async function(req, res, next) {
-
-  console.log(req.params);
-
   const catigoryId = req.params.id
   const page = req.params.page
   const catigoryProducts = await products.getAll(catigoryId, page)

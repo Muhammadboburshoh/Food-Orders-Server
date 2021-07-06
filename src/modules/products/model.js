@@ -18,10 +18,8 @@ const productsSQL = `
     offset ($2 - 1) * 6 limit 6;
 `
 
-const getAll = (catigoryId, page ) => {
-  console.log(page);
-  return rows(productsSQL, catigoryId, page)
-}
+const getAll = (catigoryId, page ) => rows(productsSQL, catigoryId, page)
+
 
 
 /*
