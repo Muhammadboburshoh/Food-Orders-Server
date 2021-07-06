@@ -10,6 +10,7 @@ router.post("/", async (req, res) => {
   try {
 
     const newOrder = await order.newOrder(req.body)
+    console.log(req.body);
 
     if(newOrder) {
       res.status(201).send(newOrder)

@@ -83,11 +83,21 @@ $$;
 
 
 
-create or replace function dont_duplicate_orderitems(_oic int, _io int, _pi int) returns int language plpgsql as $$
+create or replace function dont_duplicate_orderitems(_oic int, _pi int, _ti int) returns int language plpgsql as $$
+
+  declare
+    _oi int := (select order_id from orders where table_id = _ti and status = 0);
 
   begin
 
-    if exists(
+    if (_oi > 0) then
+      _oi = (select order_id from orders where table_id = _ti and status = 0);
+    else
+      insert into orders(table_id) values (_ti) returning order_id INTO _oi;
+    end if;
+
+
+    if (
       select
         oi.order_id
       from
@@ -95,15 +105,15 @@ create or replace function dont_duplicate_orderitems(_oic int, _io int, _pi int)
       join
         orders as o on o.order_id = oi.order_id
         where
-          o.status = 0 and oi.product_id = _pi and o.order_id = _io
-    ) then
+          o.status = 0 and oi.product_id = _pi and o.order_id = _oi
+    ) > 0 then
       update order_item set product_count = (product_count + _oic)
-      from orders where status = 0 and product_id = _pi and order_item.order_id = _io;
+      from orders where status = 0 and product_id = _pi and order_item.order_id = _oi;
 
       return 2;
 
     else
-      insert into order_item(product_count, order_id, product_id) values (_oic, _io, _pi);
+      insert into order_item(product_count, order_id, product_id) values (_oic, _oi, _pi);
       return 1;
     end if;
 
@@ -112,6 +122,7 @@ $$;
 
 insert into orders(table_id) values (1);
 select dont_duplicate_orderitems(3, (select order_id from orders where table_id = 1 and status = 0), 3);
+
 insert into order_item(product_count, product_id, order_id) values
 (2, 3, (select order_id from orders where table_id = 1 and status = 0));
 
