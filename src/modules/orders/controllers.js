@@ -30,7 +30,7 @@ router.put("/", async (req, res) => {
 
   try {
 
-    const finishedOrder = await order.finishedOrder(req.body)
+    const finishedOrder = await order.findishedOrder(req.body)
 
     if(finishedOrder) {
       res.status(201).send(finishedOrder)

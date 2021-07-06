@@ -12,7 +12,7 @@ const newOrderSQL =  `
   select dont_duplicate_orderitems($1, $2, $3)
 `
 
-const newOrder = ({tableId, productCount, productId}) => row(newOrderSQL, tableId, productCount, productId)
+const newOrder = ({productCount, productId, tableId}) => row(newOrderSQL, productCount, productId, tableId)
 
 /*
   Finished order
@@ -26,3 +26,4 @@ const findishedOrder = ({tableId}) => row(findishedOrderSQL, tableId)
 
 
 module.exports.newOrder = newOrder
+module.exports.findishedOrder = findishedOrder
