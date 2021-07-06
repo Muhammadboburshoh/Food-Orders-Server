@@ -1,28 +1,20 @@
-create function new_order() returns trigger language plpgsql as $$
+create or replace function new_order() returns trigger language plpgsql as $$
+
+  declare
+    order_is_exist int := (select order_id from orders where table_id = new.table_id and status = 0);
 
   begin
-    if ((select status from orders where table_id = NEW.table_id) = 0) then
-      return NEW
-    else
-      insert into orders(table_id) values (NEW.table_id);
-      insert into
-        order_item(order_id, product_id, table_id, count)
-        values (
-          (select order_id from orders where table_id = NEW.table_id and status = 0),
-          NEW.product_id,
-          NEW.table_id,
-          NEW.count,
-        )
+
+    if order_is_exist > 0 then
       return null;
+    else
+      return new;
     end if;
 
   end;
 $$;
 
-insert into orders(table_id) values (5);
-insert into order_item(order_id, product_id, table_id, count) values ((select order_id from orders where table_id = 5), 3, 1, 5);
-
-
-
-
-create trigger new_order_t before insert on order_item for each row execute procedure new_order()
+create trigger new_order_t
+before insert on orders
+for each row
+execute procedure new_order();

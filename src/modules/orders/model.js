@@ -3,107 +3,21 @@ const { rows, row } = require("../../../util/database")
 /*
   Insert order model
 */
-const createOrderItemSQL = `
-  insert into order_item(product_id, item_count, table_id)
-    values ($1, $2, $3)
-  returning *
+const newOrderSQL =  `
+  insert into orders(table_id) values ($1);
+  select dont_duplicate_orderitems($2, (select order_id from orders where table_id = $1 and status = 0), $3);
 `
-const createOrderSQL = `
-  insert into orders(table_id) values ($1) returning *
-`
-
-const createOrderItem = ({productId, itemCount, tableId}) => row(createOrderItemSQL, productId, itemCount, tableId)
-
-const createOrder = ({ tableId }) => row(createOrderSQL,  tableId)
+const newOrder = ({tableId, productCount, productId}) => row(newOrderSQL, tableId, productCount, productId)
 
 /*
-  getOrders
+  Finished order
 */
-
-const successfulOrdersSQL = `
-  select
-    t.table_number as table,
-    array_agg(p.product_price) as price,
-    array_agg(oi.item_count) as count,
-    array_agg(p.product_name)as product
-  from
-    order_item as oi
-  join
-    products as p on p.product_id = oi.product_id
-  join 
-    tables as t on t.table_id = oi.table_id
-  join
-    orders as o on o.table_id = t.table_id
-    where o.order_status = 1
-  group by
-    o.table_id,
-    t.table_id
-`
-const successfulOrders = () => rows(successfulOrdersSQL)
-
-
-const failedSuccessfulOrdersSQL = `
-  select
-    t.table_number as table,
-    array_agg(p.product_price) as price,
-    array_agg(oi.item_count) as count,
-    array_agg(p.product_name)as product
-  from
-    order_item as oi
-  join
-    products as p on p.product_id = oi.product_id
-  join 
-    tables as t on t.table_id = oi.table_id
-  join
-    orders as o on o.table_id = t.table_id
-    where o.order_status = 0
-  group by
-    o.table_id,
-    t.table_id
-`
-const failedSuccessfulOrders = () => rows(failedSuccessfulOrdersSQL)
-
-// buyurtma barayotgan odam bergan buyurtmasini ko'rib turishi uchun
-const newOrdersSQL = `
-  select
-    t.table_number as table,
-    array_agg(p.product_price) as price,
-    array_agg(oi.item_count) as count,
-    array_agg(p.product_name)as product
-  from
-    order_item as oi
-  join
-    products as p on p.product_id = oi.product_id
-  join 
-    tables as t on t.table_id = oi.table_id
-  join
-    orders as o on o.table_id = t.table_id
-    where o.order_status = 0 and t.table_id = $1
-  group by
-    o.table_id,
-    t.table_id
+const findishedOrderSQL = `
+  update orders set status = 1 where status = 0 and table_id = $1 returning *;
 `
 
-const newOrders = (tableId) => row(newOrdersSQL, tableId)
-
-
-module.exports.createOrderItem = createOrderItem
-module.exports.createOrder = createOrder
-module.exports.successfulOrders = successfulOrders
-module.exports.failedSuccessfulOrders = failedSuccessfulOrders
-module.exports.newOrders = newOrders
+const findishedOrder = ({tableId}) => row(findishedOrderSQL, tableId)
 
 
 
-/* `
-select
-  t.table_number,
-  p.product_name
-from
-  tables as t
-  join
-  order_item as oi on oi.table_id = t.table_id
-  join
-  products as p on oi.product_id = p.product_id
-  where t.table_id = 2
-` */
+module.exports.newOrder = newOrder
