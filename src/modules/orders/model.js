@@ -23,7 +23,30 @@ const findishedOrderSQL = `
 
 const findishedOrder = ({tableId}) => row(findishedOrderSQL, tableId)
 
+/*
+  GET pending orders
+*/
+
+const pendingOrdersSQL = `
+  select
+    o.order_id,
+    o.table_id,
+    oi.product_count,
+    p.product_name
+  from
+    orders as o
+  join
+    order_item as oi on oi.order_id = o.order_id
+  join
+    products as p on p.product_id = oi.product_id
+  where
+    o.status = 0 and table_id = $1
+`
+
+const pendingOrders = ({tableId}) => rows(pendingOrdersSQL, tableId)
+
 
 
 module.exports.newOrder = newOrder
 module.exports.findishedOrder = findishedOrder
+module.exports.pendingOrders = pendingOrders
