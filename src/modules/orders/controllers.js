@@ -26,6 +26,9 @@ router.post("/", async (req, res) => {
 
 })
 
+/*
+  finished order
+*/
 router.put("/", async (req, res) => {
 
   try {
@@ -46,6 +49,9 @@ router.put("/", async (req, res) => {
 
 })
 
+/* 
+  get pending order
+ */
 router.get("/:id", async(req, res) => {
 
   try{
@@ -67,6 +73,27 @@ router.get("/:id", async(req, res) => {
 
 })
 
+/*
+  delete order
+*/
+router.delete("/:itemId", async(req, res) => {
 
+  try {
+
+    const deleteItemOrder = await order.deleteItemOrder(req.params)
+
+    if(deleteItemOrder) {
+      res.status(201).send(deleteItemOrder)
+    } else {
+      res.status(401).end()
+    }
+
+  }catch(err) {
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
 
 module.exports = router

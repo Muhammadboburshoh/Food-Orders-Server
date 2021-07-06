@@ -46,9 +46,16 @@ const pendingOrdersSQL = `
 const pendingOrders = (tableId) => rows(pendingOrdersSQL, tableId)
 
 
-// delete
+/* 
+  Delete order item
+ */
+const deleteItemOrderSQL = `
+  delete from order_item where item_id = $1 returning *
+`
 
+const deleteItemOrder = ({itemId}) => row(deleteItemOrderSQL, itemId)
 
 module.exports.newOrder = newOrder
 module.exports.findishedOrder = findishedOrder
 module.exports.pendingOrders = pendingOrders
+module.exports.deleteItemOrder = deleteItemOrder
