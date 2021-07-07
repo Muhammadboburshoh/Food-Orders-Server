@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 /*
   finished order
 */
-router.put("/", async (req, res) => {
+router.post("/new", async (req, res) => {
 
   console.log("asdd");
   try {

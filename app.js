@@ -40,7 +40,7 @@ app.use((_, res, next) => {
 
 
 app.use('/products', productsRouter);
-app.use('/categories', categoriesRouter);
+app.use('/categories', categoriesRouter)
 app.use('/login', adminRouter);
 app.use('/tables', tablesRouter);
 app.use('/order', orderRouter);

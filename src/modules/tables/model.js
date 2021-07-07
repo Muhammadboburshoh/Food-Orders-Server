@@ -5,6 +5,7 @@ const { rows, row } = require("../../../util/database")
 */
 const tablesSQL = `
   select * from tables
+  order by table_number
 `
 
 const tablesArr = () => {
