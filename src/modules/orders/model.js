@@ -1,13 +1,5 @@
 const { rows, row } = require("../../../util/database")
 
-/*
-  Insert order model
-*/
-/* const newOrderSQL =  `
-  insert into orders(table_id) values ($1);
-  select dont_duplicate_orderitems($2, (select order_id from orders where table_id = $1 and status = 0), $3);
-` */
-
 const newOrderSQL =  `
   select dont_duplicate_orderitems($1, $2, $3)
 `
@@ -55,6 +47,15 @@ const deleteItemOrderSQL = `
 `
 
 const deleteItemOrder = ({itemId}) => row(deleteItemOrderSQL, itemId)
+
+
+/* 
+  ADMIN PANEL MODEL
+*/
+
+const allUnfulfilledOrders = ``
+
+const allCompletedOrders = ``
 
 module.exports.newOrder = newOrder
 module.exports.findishedOrder = findishedOrder

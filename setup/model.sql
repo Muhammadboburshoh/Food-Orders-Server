@@ -52,34 +52,7 @@ create table order_item(
 );
 
 
-
-
-create or replace function make_order_pending (_table_id int) returns int language plpgsql as $$
-
-  declare
-    _order_id int : (
-      select
-        o.order_id
-      from
-        orders as o
-      join
-        tables as t on t.table_id = o.table_id
-        where
-          t.table_id = o.table_id and status = 0
-    );
-
-  begin
-
-  if _order_id > 0 then
-    update orders set status = 1 where order_id = _order_id;
-
-    return _order_id
-  else
-    return 0
-  end if;
-
-  end;
-$$;
+-- functions
 
 
 
@@ -120,11 +93,34 @@ create or replace function dont_duplicate_orderitems(_oic int, _pi int, _ti int)
   end;
 $$;
 
-insert into orders(table_id) values (1);
-select dont_duplicate_orderitems(3, (select order_id from orders where table_id = 1 and status = 0), 3);
 
-insert into order_item(product_count, product_id, order_id) values
-(2, 3, (select order_id from orders where table_id = 1 and status = 0));
+/* create or replace function make_order_pending (_table_id int) returns int language plpgsql as $$
+
+  declare
+    _order_id int : (
+      select
+        o.order_id
+      from
+        orders as o
+      join
+        tables as t on t.table_id = o.table_id
+        where
+          t.table_id = o.table_id and status = 0
+    );
+
+  begin
+
+  if _order_id > 0 then
+    update orders set status = 1 where order_id = _order_id;
+
+    return _order_id
+  else
+    return 0
+  end if;
+
+  end;
+$$; */
+
 
 
 
