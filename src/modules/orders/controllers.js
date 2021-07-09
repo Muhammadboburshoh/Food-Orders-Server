@@ -31,7 +31,6 @@ router.post("/", async (req, res) => {
 */
 router.post("/new", async (req, res) => {
 
-  console.log("asdd");
   try {
 
     const finishedOrder = await order.findishedOrder(req.body)
