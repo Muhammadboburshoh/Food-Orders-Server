@@ -94,6 +94,17 @@ create or replace function dont_duplicate_orderitems(_oic int, _pi int, _ti int)
 $$;
 
 
+create or replace function get_all_orders (_status int) returns table(
+  order_id int,
+  array_agg(product) varchar,
+  count,
+
+  time data,
+  status int,
+
+)
+
+
 /* create or replace function make_order_pending (_table_id int) returns int language plpgsql as $$
 
   declare
