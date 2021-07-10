@@ -53,11 +53,88 @@ const deleteItemOrder = ({itemId}) => row(deleteItemOrderSQL, itemId)
   ADMIN PANEL MODEL
 */
 
-const allUnfulfilledOrders = ``
+const allUnfulfilledOrdersSQL = `
+  select
+    o.order_id as id,
+    t.table_number as table_num,
+    array_agg(p.product_name) as product,
+    o.time as created,
+    array_agg(oi.product_count) as count,
+    sum(oi.product_count) as all_count,
+    sum(p.product_price * oi.product_count) as price
+  from
+    orders as o
+  join
+    order_item as oi on o.order_id = oi.order_id
+  join
+    products as p on p.product_id = oi.product_id
+  join
+    tables as t on t.table_id = o.table_id
+  where
+    o.status = 1
+  group by
+    id, table_num, time, status
+  order by
+    id DESC
+  limit
+    10
+  offset
+    (($1 - 1) * 10)
+`
+const allUnfulfilledOrders = (page) => rows(allUnfulfilledOrdersSQL, page)
 
-const allCompletedOrders = ``
+
+
+const allCompletedOrdersSQL = `
+  select
+    o.order_id as id,
+    t.table_number as table_num,
+    array_agg(p.product_name) as product,
+    o.time as created,
+    array_agg(oi.product_count) as count,
+    sum(oi.product_count) as all_count,
+    sum(p.product_price * oi.product_count) as price
+  from
+    orders as o
+  join
+    order_item as oi on o.order_id = oi.order_id
+  join
+    products as p on p.product_id = oi.product_id
+  join
+    tables as t on t.table_id = o.table_id
+  where
+    o.status = 2
+  group by
+    id, table_num, time, status
+  order by
+    id DESC
+  limit
+    10
+  offset
+    (($1 - 1) * 10)
+`
+
+const allCompletedOrders = (page) => rows(allCompletedOrdersSQL, page)
+
+/*
+  Finished order
+*/
+const completedOrderSQL = `
+  update orders set status = 1 where status = 1 and table_id = $1 returning *;
+`
+
+const completedOrder = ({tableId}) => row(completedOrderSQL, tableId)
+
 
 module.exports.newOrder = newOrder
 module.exports.findishedOrder = findishedOrder
 module.exports.pendingOrders = pendingOrders
 module.exports.deleteItemOrder = deleteItemOrder
+
+/* admin export */
+module.exports.allUnfulfilledOrders = allUnfulfilledOrders
+module.exports.allCompletedOrders = allCompletedOrders
+module.exports.completedOrder = completedOrder
+
+
+

@@ -94,55 +94,47 @@ create or replace function dont_duplicate_orderitems(_oic int, _pi int, _ti int)
 $$;
 
 
-create or replace function get_all_orders (_status int, page_size int, page_number) returns table(
-  order_id int,
-  table int
+create or replace function get_all_orders (_status int, page_size int = 1, page_number int = 10) returns table(
+  id int,
+  table_num int,
   product varchar [],
-  time timestamp with time zone,
+  created timestamp with time zone,
   count int [],
-  all_count bigint,
-  price bigint
-  time data,
-  status int
+  all_count int,
+  price decimal
 ) language plpgsql as $$
   begin
 
     return query 
-     select
-      o.order_id
-      
-
-  end;
-$$;
-
-
-/* create or replace function make_order_pending (_table_id int) returns int language plpgsql as $$
-
-  declare
-    _order_id int : (
       select
-        o.order_id
+        o.order_id as id,
+        t.table_number as table_num,
+        array_agg(p.product_name) as product,
+        o.time as created,
+        array_agg(oi.product_count) as count,
+        sum(oi.product_count) as all_count,
+        sum(p.product_price * oi.product_count) as price
       from
         orders as o
       join
+        order_item as oi on o.order_id = oi.order_id
+      join
+        products as p on p.product_id = oi.product_id
+      join
         tables as t on t.table_id = o.table_id
-        where
-          t.table_id = o.table_id and status = 0
-    );
-
-  begin
-
-  if _order_id > 0 then
-    update orders set status = 1 where order_id = _order_id;
-
-    return _order_id
-  else
-    return 0
-  end if;
+      where
+        o.status = _status
+      group by
+        id, table_num, time, status
+      order by
+        id DESC
+      limit
+        page_size
+      offset
+        ((page_number - 1) * page_size)
+      ;
 
   end;
-$$; */
-
-
+$$;
 
 

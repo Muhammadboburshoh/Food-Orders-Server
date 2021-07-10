@@ -95,4 +95,45 @@ router.delete("/:itemId", async(req, res) => {
 
 })
 
+
+/* admin */
+
+router.get("/admin/false", async(req, res) => {
+
+  try{
+    let page = req.query.page
+    const allUnfulfilledOrders = await order.allUnfulfilledOrders(page)
+
+    if(allUnfulfilledOrders) {
+      res.status(201).send(allUnfulfilledOrders)
+    } else {
+      res.status(401).end()
+    }
+  }catch (err){
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
+
+router.get("/admin/true", async(req, res) => {
+
+  try{
+    let page = req.query.page
+    const allCompletedOrders = await order.allCompletedOrders(page)
+
+    if(allCompletedOrders) {
+      res.status(201).send(allCompletedOrders)
+    } else {
+      res.status(401).end()
+    }
+  }catch (err){
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
+
 module.exports = router
