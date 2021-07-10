@@ -120,10 +120,10 @@ const allCompletedOrders = (page) => rows(allCompletedOrdersSQL, page)
   Finished order
 */
 const completedOrderSQL = `
-  update orders set status = 1 where status = 1 and table_id = $1 returning *;
+  update orders set status = 2 where status = 1 and order_id = $1 returning *;
 `
 
-const completedOrder = ({tableId}) => row(completedOrderSQL, tableId)
+const completedOrder = ({ orderId }) => row(completedOrderSQL, orderId)
 
 
 module.exports.newOrder = newOrder

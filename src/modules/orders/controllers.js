@@ -136,4 +136,27 @@ router.get("/admin/true", async(req, res) => {
 
 })
 
+/*
+  finished order
+*/
+router.post("/admin/true", async (req, res) => {
+
+  try {
+
+    const completedOrder = await order.completedOrder(req.body)
+
+    if(completedOrder) {
+      res.status(201).send(completedOrder)
+    } else {
+      res.status(401).end()
+    }
+
+  } catch(err) {
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
+
 module.exports = router
