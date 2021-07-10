@@ -1,5 +1,7 @@
 const router = require("express").Router()
 
+const { verify }= require("../../../util/jwt")
+
 const order = require("./model")
 
 /*
@@ -101,14 +103,22 @@ router.delete("/:itemId", async(req, res) => {
 router.get("/admin/false", async(req, res) => {
 
   try{
-    let page = req.query.page
-    const allUnfulfilledOrders = await order.allUnfulfilledOrders(page)
 
-    if(allUnfulfilledOrders) {
-      res.status(201).send(allUnfulfilledOrders)
+    const user = await verify(req.headers.access_token)
+    if(user.role == 1) {
+
+      let page = req.query.page
+      const allUnfulfilledOrders = await order.allUnfulfilledOrders(page)
+  
+      if(allUnfulfilledOrders) {
+        res.status(201).send(allUnfulfilledOrders)
+      } else {
+        res.status(401).end()
+      }
     } else {
       res.status(401).end()
     }
+
   }catch (err){
     res.statusMessage = err
     res.status(401).end()
@@ -120,11 +130,18 @@ router.get("/admin/false", async(req, res) => {
 router.get("/admin/true", async(req, res) => {
 
   try{
-    let page = req.query.page
-    const allCompletedOrders = await order.allCompletedOrders(page)
 
-    if(allCompletedOrders) {
-      res.status(201).send(allCompletedOrders)
+    const user = await verify(req.headers.access_token)
+    if(user.role == 1) {
+
+      let page = req.query.page
+      const allCompletedOrders = await order.allCompletedOrders(page)
+  
+      if(allCompletedOrders) {
+        res.status(201).send(allCompletedOrders)
+      } else {
+        res.status(401).end()
+      }
     } else {
       res.status(401).end()
     }
@@ -143,13 +160,21 @@ router.post("/admin/true", async (req, res) => {
 
   try {
 
-    const completedOrder = await order.completedOrder(req.body)
+    const user = await verify(req.headers.access_token)
 
-    if(completedOrder) {
-      res.status(201).send(completedOrder)
+    if(user.role == 1) {
+
+      const completedOrder = await order.completedOrder(req.body)
+  
+      if(completedOrder) {
+        res.status(201).send(completedOrder)
+      } else {
+        res.status(401).end()
+      }
     } else {
       res.status(401).end()
     }
+
 
   } catch(err) {
     res.statusMessage = err
