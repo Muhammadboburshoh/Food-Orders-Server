@@ -15,7 +15,9 @@ const productsSQL = `
     products as p
   join
     categories as c on c.category_id = p.category_id and c.category_id = $1
-    offset ($2 - 1) * 6 limit 6;
+    order by
+      p.product_id desc
+    offset ($2 - 1) * 6 limit 6
 `
 
 const getAll = (catigoryId, page ) => rows(productsSQL, catigoryId, page)
@@ -47,9 +49,9 @@ const createProductSQL = `
   ($1, $2, $3, $4) returning *
 `
 
-const createProduct = ({productName, productPrice, productImage, catigoryId}) => {
+const createProduct = ({productName, productPrice, productImage, categoryId}) => {
 
-  return row(createProductSQL, productName, productPrice, productImage, catigoryId)
+  return row(createProductSQL, productName, productPrice, productImage, categoryId)
 }
 
 

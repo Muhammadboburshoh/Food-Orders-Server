@@ -6,8 +6,6 @@ const path = require("path")
 const { verify }= require("../../../util/jwt")
 const products = require("./model")
 
-
-
 /* GET all products. */
 router.get('/:id/:page', async function(req, res, next) {
   const catigoryId = req.params.id
@@ -20,7 +18,6 @@ router.get('/:id/:page', async function(req, res, next) {
     res.status(401).end()
   }
 })
-
 
 
 /*
