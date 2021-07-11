@@ -33,9 +33,8 @@ router.get('/admin', async function(req, res, next) {
 
     const tables = await adminTables(page)
     if(tables) {
-      res.send(tables)
+      res.status(201).send(tables)
     } else {
-      throw Error
       res.status(401).end()
     }
 
