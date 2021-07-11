@@ -1,7 +1,7 @@
 const router = require("express").Router()
 
 const { verify } = require("../../../util/jwt")
-const { tablesArr, createTable, editTableFn, deleteTableFn } = require("./model")
+const { tablesArr, createTable, editTableFn, deleteTableFn, adminTables } = require("./model")
 
 /* GET tables. */
 router.get('/', async function(req, res, next) {
@@ -9,6 +9,29 @@ router.get('/', async function(req, res, next) {
   try {
 
     const tables = await tablesArr()
+    if(tables) {
+      res.send(tables)
+    } else {
+      throw Error
+      res.status(401).end()
+    }
+
+  } catch(e) {
+    console.log(e)
+    res.statusMessage = e.message
+    res.status(401).end()
+  }
+
+})
+
+/* aqdmin pagination */
+router.get('/admin', async function(req, res, next) {
+
+  try {
+
+    const page = req.query.page
+
+    const tables = await adminTables(page)
     if(tables) {
       res.send(tables)
     } else {
@@ -90,7 +113,6 @@ router.put("/:id", async(req, res) => {
 */
 router.delete("/del/:id", async(req, res) =>{
 
-  console.log("user");
   try{
 
     const user = await verify(req.headers.access_token)

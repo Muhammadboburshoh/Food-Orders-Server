@@ -12,6 +12,20 @@ const tablesArr = () => {
   return rows(tablesSQL)
 }
 
+/* admin pagination */
+const adminTablesSQL = `
+  select * from tables
+  order by table_number
+  limit
+    10
+  offset
+    (($1 - 1) * 10)
+`
+
+const adminTables = (page) => {
+  return rows(adminTablesSQL, page)
+}
+
 /*
   Create Table model
 */
@@ -48,3 +62,4 @@ module.exports.tablesArr = tablesArr
 module.exports.createTable = createTable
 module.exports.editTableFn = editTableFn
 module.exports.deleteTableFn = deleteTableFn
+module.exports.adminTables = adminTables
