@@ -126,6 +126,12 @@ const completedOrderSQL = `
 const completedOrder = ({ orderId }) => row(completedOrderSQL, orderId)
 
 
+const deleteOrderSQL = `
+  delete from orders where order_id = $1 returning *
+`
+
+const deleteOrder = ({orderId}) => row(deleteOrderSQL, orderId)
+
 module.exports.newOrder = newOrder
 module.exports.findishedOrder = findishedOrder
 module.exports.pendingOrders = pendingOrders
@@ -135,6 +141,7 @@ module.exports.deleteItemOrder = deleteItemOrder
 module.exports.allUnfulfilledOrders = allUnfulfilledOrders
 module.exports.allCompletedOrders = allCompletedOrders
 module.exports.completedOrder = completedOrder
+module.exports.deleteOrder = deleteOrder
 
 
 

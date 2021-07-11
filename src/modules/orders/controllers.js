@@ -184,4 +184,24 @@ router.post("/admin/true", async (req, res) => {
 
 })
 
+router.delete("/order/:orderId", async(req, res) => {
+
+  try {
+
+    const deleteOrder = await order.deleteOrder(req.params)
+
+    if(deleteOrder) {
+      res.status(201).send(deleteOrder)
+    } else {
+      res.status(401).end()
+    }
+
+  }catch(err) {
+    res.statusMessage = err
+    res.status(401).end()
+    console.log(err);
+  }
+
+})
+
 module.exports = router
