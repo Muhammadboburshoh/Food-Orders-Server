@@ -1,10 +1,10 @@
 const config = {
   PORT: process.env.PORT || 4000,
   PG: {
-    host: 'localhost',
-    user: 'muhammadbobur',
-    password: '1111',
-    database: 'orders_food',
+    host: 'fanny.db.elephantsql.com',
+    user: 'rdmbfwwb',
+    password: 'MP1P2tswzRu1gWXj3oUYvrOxtCsu-oZ5',
+    database: 'rdmbfwwb',
     port: 5432
   }
 }
