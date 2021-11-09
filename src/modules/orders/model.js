@@ -90,7 +90,7 @@ const allCompletedOrdersSQL = `
     o.order_id as id,
     t.table_number as table_num,
     array_agg(p.product_name) as product,
-    o.time as created,
+    to_char(o.time, 'HH12:MIPM YYYY-MM-D') as created,
     array_agg(oi.product_count) as count,
     sum(oi.product_count) as all_count,
     sum(p.product_price * oi.product_count) as price
